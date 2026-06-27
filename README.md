@@ -94,6 +94,23 @@ Bipolar Junction Transistors (BJTs) are provided in SKY130 as fixed-size macros.
 
 ---
 
+## Developer Verification & Testing
+
+If you want to verify that the raw Magic TCL extraction logic is functioning correctly on your machine *before* running the massive 700+ point sweep or blindly trusting the area models, you can run the isolated test scripts located in the `tests/` directory.
+
+These scripts were developed exactly for that purpose—to overcome initial pathing and TCL extraction hurdles:
+
+- **`tests/test_one_device.py`**: A minimal sanity check that connects to Magic, instantiates a single `nfet_01v8`, parses its bounding box, and prints it out. Run this to verify your `$PDK_ROOT` and Magic paths are sound!
+- **`tests/comprehensive_test.py`**: An older, highly-verbose script used to test the initial linear regression and debug Magic DRC loading issues.
+
+**To run the basic sanity check:**
+```bash
+cd tests
+python3 test_one_device.py
+```
+
+---
+
 ## Advanced Usage: Rebuilding the Database
 
 If you need to support custom device sizes outside the bounds of the existing database, or if you are adapting this tool for a modified PDK variant, you can regenerate the database locally. 

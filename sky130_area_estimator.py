@@ -364,9 +364,9 @@ def main():
             print(f"  {'Area Left Over':38} {'':22} {left:>10.2f} µm²")
             print(f"  {'Utilization':38} {'':22} {pct:>10.1f} %")
             if left < 0:
-                print(f"  ❌ WARNING: You are OVER BUDGET by {abs(left):.2f} µm²!")
+                print(f"  WARNING: You are OVER BUDGET by {abs(left):.2f} µm²!")
             else:
-                print(f"  ✅ You are within budget.")
+                print(f"  INFO: You are within budget.")
             print("━" * 72)
 
     if args.out:

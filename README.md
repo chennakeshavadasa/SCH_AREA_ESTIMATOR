@@ -1,23 +1,40 @@
-# SKY130 Area Approximator
+# SKY130 Schematic Area Estimator
 
-This repository contains robust, highly accurate Python scripts designed for estimating the physical layout area of analog/mixed-signal blocks in the **Skywater 130nm** (SKY130) node directly from SPICE netlists—without actually drawing the layout!
+This tool provides analog and mixed-signal designers with a highly accurate method for estimating the physical layout area of a Skywater 130nm (SKY130) design directly from a SPICE netlist. It eliminates the need for premature layout generation when determining area budgets and floorplanning constraints.
 
-## 🚀 Key Features
+---
 
-1. **Physical Accuracy**: Instead of assuming area scales perfectly linearly, our mathematical model calculates Bounding-Box area as a product of bounding-box height (`h_um`) and width (`w_um`). It fits `Height` as a function of drawn `Width`, and `Width` as a function of `Length * nf`. This successfully models the non-linear cross terms, guaranteeing <2.5% estimation error even for extreme analog W/L ratios (e.g. `W=40, L=5`).
-2. **Automated Magic DB Generation**: Comes with an automated magic-invoking script (`sky130_measure_devices.py`) that sweeps 750+ unique device topologies (W/L/nf) and logs their bounding boxes into a JSON database.
-3. **Smart Netlist Parsing**: The `sky130_area_estimator.py` parses `xschem`-generated `.spice` netlists, maps instances to the database, applies a routing overhead multiplier, and sums up the total area.
-4. **Area Budget Tracking**: Integrated `--budget` flag to help analog designers verify if their block fits in the allotted floorplan!
+## Repository Structure
 
-## 🛠 Usage
+The files within this repository are organized as follows:
 
-### 1. Estimating Area
-Run the estimator script on your design SPICE netlist:
+- **sky130_area_estimator.py**: The primary execution script. It parses a target SPICE netlist, applies the mathematical area models, and outputs the total estimated area.
+- **device_db.json**: The pre-calculated database. This contains all regression parameters and physical bounding-box dimensions required for SKY130 devices.
+- **reports/**: Contains detailed reports (in both `.docx` and `.pdf` formats) that document the mathematical models used and provide parity plots demonstrating their accuracy against actual physical layouts.
+- **scripts/**: Contains `sky130_measure_devices.py`, a backend tool used to interface with the Magic VLSI layout tool. This script measures physical device bounding boxes and performs regressions to generate `device_db.json`.
+- **tests/**: Contains legacy verification, plotting, and diagnostic scripts used during the development phase of the estimator.
+
+---
+
+## Usage Guide
+
+### 1. Standard Area Estimation
+
+To calculate the estimated layout area for a specific design, execute the estimator script and provide the path to your SPICE netlist.
 
 ```bash
-python3 sky130_area_estimator.py --netlist /path/to/my_design.spice --budget 16000
+python3 sky130_area_estimator.py --netlist /path/to/your_design.spice
 ```
-**Output Example:**
+
+### 2. Area Estimation with Budgeting
+
+If a specific area budget has been assigned to your block, you can provide it to the script using the `--budget` flag (in square micrometers). The script will calculate the utilization percentage and indicate the remaining available area.
+
+```bash
+python3 sky130_area_estimator.py --netlist /path/to/your_design.spice --budget 16000
+```
+
+**Example Output:**
 ```text
   ────────────────────────────────────────────────────────────────────────
   Devices subtotal                                                12319.84 µm²
@@ -25,29 +42,26 @@ python3 sky130_area_estimator.py --netlist /path/to/my_design.spice --budget 160
   ────────────────────────────────────────────────────────────────────────
   TOTAL ESTIMATED AREA                                            16015.79 µm²
   Equivalent square side                                            126.55 µm
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Parsed 205 instances, costed 205, skipped 0
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Area Budget Allowed                                             16000.00 µm²
   Area Left Over                                                    -15.79 µm²
   Utilization                                                        100.1 %
-  ❌ WARNING: You are OVER BUDGET by 15.79 µm²!
+  WARNING: You are OVER BUDGET by 15.79 µm²!
 ```
 
-### 2. Regenerating the Database
-If you wish to add custom device sizes to the database or are using a different process node variant, you can re-run the magic sweep script.
-It will automatically search for your PDK using `$PDK_ROOT`, or you can supply custom paths:
+---
+
+## Advanced Usage: Rebuilding the Database
+
+If you need to support custom device sizes outside the bounds of the existing database, or if you are adapting this tool for a modified PDK variant, you can regenerate the database locally. 
+
+This requires the Magic VLSI layout tool to be installed on your system.
 
 ```bash
-python3 sky130_measure_devices.py --mag-path /path/to/pdk/sky130A/libs.ref/sky130_fd_pr/mag
+cd scripts
+python3 sky130_measure_devices.py
 ```
-This script will:
-- Silently open magic in `-dnull` mode.
-- Instantiate hundreds of MOSFETs, Resistors, and Capacitors.
-- Patch the `sky130::ruleset` TCL bug natively.
-- Measure physical bounding boxes.
-- Run advanced linear regressions using `numpy` to map parameters to formulas.
-- Output a completed `device_db.json`.
 
-## 📁 Repository Structure
-- `sky130_measure_devices.py`: Automated layout extraction & model fitting.
-- `device_db.json`: The fitted parameters and raw bounding box dataset.
-- `sky130_area_estimator.py`: SPICE parser and area calculator.
-- `Comprehensive_Model_Report.docx`: Detailed document showing mathematical parity plots and error margins.
+The script will automatically detect your PDK location using the `PDK_ROOT` environment variable. It operates Magic in batch mode (`-dnull`) to instantiate devices, extract exact physical bounding boxes, perform linear regression on the extracted dimensions, and update `device_db.json`.

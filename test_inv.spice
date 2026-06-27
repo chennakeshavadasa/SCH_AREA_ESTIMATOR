@@ -1,0 +1,6 @@
+* Simple Inverter for Area Estimator Test
+.subckt inv in out VDD VSS
+XM1 out in VSS VSS sky130_fd_pr__nfet_01v8 w=1 l=0.15 nf=1 m=1
+XM2 out in VDD VDD sky130_fd_pr__pfet_01v8 w=2 l=0.15 nf=1 m=1
+.ends
+X1 in out VDD VSS inv

@@ -1,0 +1,1935 @@
+FILE: /home/nithin/.ciel/sky130A/libs.tech/magic/sky130A.tcl  (8403 lines)
+
+══════════════════════════════════════════════════════════════════════
+SECTION 1: Every line containing 'ruleset'
+══════════════════════════════════════════════════════════════════════
+     51:      set ruleset [dict create]
+     55:      dict set ruleset poly_surround    0.08      ;# Poly surrounds contact
+     56:      dict set ruleset diff_surround    0.06      ;# Diffusion surrounds contact
+     57:      dict set ruleset gate_to_diffcont 0.145     ;# Gate to diffusion contact center
+     58:      dict set ruleset gate_to_polycont 0.275     ;# Gate to poly contact center
+     59:      dict set ruleset gate_extension   0.13      ;# Poly extension beyond gate
+     60:      dict set ruleset diff_extension   0.29      ;# Diffusion extension beyond gate
+     61:      dict set ruleset contact_size     0.17      ;# Minimum contact size
+     62:      dict set ruleset via_size         0.17      ;# Minimum via size
+     63:      dict set ruleset metal_surround   0.08      ;# Local interconnect overlaps contact
+     64:      dict set ruleset sub_surround     0.18      ;# Sub/well surrounds diffusion
+     65:      dict set ruleset diff_spacing     0.28      ;# Diffusion spacing rule
+     66:      dict set ruleset poly_spacing     0.21      ;# Poly spacing rule
+     67:      dict set ruleset diff_poly_space  0.075     ;# Diffusion to poly spacing rule
+     68:      dict set ruleset diff_gate_space  0.20      ;# Diffusion to gate poly spacing rule
+     69:      dict set ruleset metal_spacing    0.23      ;# Local interconnect spacing rule
+     70:      dict set ruleset mmetal_spacing   0.14      ;# Metal spacing rule (above local interconnect)
+     71:      dict set ruleset res_to_cont      0.20      ;# resistor to contact center
+     72:      dict set ruleset res_diff_spacing 0.20      ;# resistor to guard ring
+   1741:      # Set a local variable for each rule in ruleset
+   1742:      foreach key [dict keys $sky130::ruleset] {
+   1743:          set $key [dict get $sky130::ruleset $key]
+   1757:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   1769:      # Set a local variable for each rule in ruleset
+   1770:      foreach key [dict keys $sky130::ruleset] {
+   1771:          set $key [dict get $sky130::ruleset $key]
+   1785:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   1791:      # Set a local variable for each rule in ruleset
+   1792:      foreach key [dict keys $sky130::ruleset] {
+   1793:          set $key [dict get $sky130::ruleset $key]
+   1807:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   1813:      # Set a local variable for each rule in ruleset
+   1814:      foreach key [dict keys $sky130::ruleset] {
+   1815:          set $key [dict get $sky130::ruleset $key]
+   1830:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   1839:      # Set a local variable for each rule in ruleset
+   1840:      foreach key [dict keys $sky130::ruleset] {
+   1841:          set $key [dict get $sky130::ruleset $key]
+   1859:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   1867:      # Set a local variable for each rule in ruleset
+   1868:      foreach key [dict keys $sky130::ruleset] {
+   1869:          set $key [dict get $sky130::ruleset $key]
+   1887:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   1895:      # Set a local variable for each rule in ruleset
+   1896:      foreach key [dict keys $sky130::ruleset] {
+   1897:          set $key [dict get $sky130::ruleset $key]
+   1915:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   1924:      # Set a local variable for each rule in ruleset
+   1925:      foreach key [dict keys $sky130::ruleset] {
+   1926:          set $key [dict get $sky130::ruleset $key]
+   1946:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   1955:      # Set a local variable for each rule in ruleset
+   1956:      foreach key [dict keys $sky130::ruleset] {
+   1957:          set $key [dict get $sky130::ruleset $key]
+   1971:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   2714:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   2736:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   3945:      # Set a local variable for each rule in ruleset
+   3946:      foreach key [dict keys $sky130::ruleset] {
+   3947:          set $key [dict get $sky130::ruleset $key]
+   4006:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4014:      # Set a local variable for each rule in ruleset
+   4015:      foreach key [dict keys $sky130::ruleset] {
+   4016:          set $key [dict get $sky130::ruleset $key]
+   4081:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4087:      # Set a local variable for each rule in ruleset
+   4088:      foreach key [dict keys $sky130::ruleset] {
+   4089:          set $key [dict get $sky130::ruleset $key]
+   4154:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4160:      # Set a local variable for each rule in ruleset
+   4161:      foreach key [dict keys $sky130::ruleset] {
+   4162:          set $key [dict get $sky130::ruleset $key]
+   4227:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4233:      # Set a local variable for each rule in ruleset
+   4234:      foreach key [dict keys $sky130::ruleset] {
+   4235:          set $key [dict get $sky130::ruleset $key]
+   4300:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4306:      # Set a local variable for each rule in ruleset
+   4307:      foreach key [dict keys $sky130::ruleset] {
+   4308:          set $key [dict get $sky130::ruleset $key]
+   4373:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4381:      # Set a local variable for each rule in ruleset
+   4382:      foreach key [dict keys $sky130::ruleset] {
+   4383:          set $key [dict get $sky130::ruleset $key]
+   4448:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4456:      # Set a local variable for each rule in ruleset
+   4457:      foreach key [dict keys $sky130::ruleset] {
+   4458:          set $key [dict get $sky130::ruleset $key]
+   4523:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4529:      # Set a local variable for each rule in ruleset
+   4530:      foreach key [dict keys $sky130::ruleset] {
+   4531:          set $key [dict get $sky130::ruleset $key]
+   4596:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4602:      # Set a local variable for each rule in ruleset
+   4603:      foreach key [dict keys $sky130::ruleset] {
+   4604:          set $key [dict get $sky130::ruleset $key]
+   4669:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4675:      # Set a local variable for each rule in ruleset
+   4676:      foreach key [dict keys $sky130::ruleset] {
+   4677:          set $key [dict get $sky130::ruleset $key]
+   4742:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4748:      # Set a local variable for each rule in ruleset
+   4749:      foreach key [dict keys $sky130::ruleset] {
+   4750:          set $key [dict get $sky130::ruleset $key]
+   4815:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4823:      # Set a local variable for each rule in ruleset
+   4824:      foreach key [dict keys $sky130::ruleset] {
+   4825:          set $key [dict get $sky130::ruleset $key]
+   4843:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4851:      # Set a local variable for each rule in ruleset
+   4852:      foreach key [dict keys $sky130::ruleset] {
+   4853:          set $key [dict get $sky130::ruleset $key]
+   4871:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4879:      # Set a local variable for each rule in ruleset
+   4880:      foreach key [dict keys $sky130::ruleset] {
+   4881:          set $key [dict get $sky130::ruleset $key]
+   4899:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4907:      # Set a local variable for each rule in ruleset
+   4908:      foreach key [dict keys $sky130::ruleset] {
+   4909:          set $key [dict get $sky130::ruleset $key]
+   4928:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4936:      # Set a local variable for each rule in ruleset
+   4937:      foreach key [dict keys $sky130::ruleset] {
+   4938:          set $key [dict get $sky130::ruleset $key]
+   4963:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4971:      # Set a local variable for each rule in ruleset
+   4972:      foreach key [dict keys $sky130::ruleset] {
+   4973:          set $key [dict get $sky130::ruleset $key]
+   4986:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   4994:      # Set a local variable for each rule in ruleset
+   4995:      foreach key [dict keys $sky130::ruleset] {
+   4996:          set $key [dict get $sky130::ruleset $key]
+   5009:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   5017:      # Set a local variable for each rule in ruleset
+   5018:      foreach key [dict keys $sky130::ruleset] {
+   5019:          set $key [dict get $sky130::ruleset $key]
+   5032:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   5040:      # Set a local variable for each rule in ruleset
+   5041:      foreach key [dict keys $sky130::ruleset] {
+   5042:          set $key [dict get $sky130::ruleset $key]
+   5055:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   5063:      # Set a local variable for each rule in ruleset
+   5064:      foreach key [dict keys $sky130::ruleset] {
+   5065:          set $key [dict get $sky130::ruleset $key]
+   5078:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   5083:      # Set a local variable for each rule in ruleset
+   5084:      foreach key [dict keys $sky130::ruleset] {
+   5085:          set $key [dict get $sky130::ruleset $key]
+   5098:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7164:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7181:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7200:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7223:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7242:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7261:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7286:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7309:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7327:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7345:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7370:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7391:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7421:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7447:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+   7473:      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+
+══════════════════════════════════════════════════════════════════════
+SECTION 2: Every line containing 'tech_setup' or 'sky130::setup'
+══════════════════════════════════════════════════════════════════════
+
+══════════════════════════════════════════════════════════════════════
+SECTION 3: Full proc bodies that reference 'ruleset'
+══════════════════════════════════════════════════════════════════════
+
+── PROC: sky130::sky130_fd_pr__diode_pw2nd_05v5_draw  (lines 1739–1759) ──
+  proc sky130::sky130_fd_pr__diode_pw2nd_05v5_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    dev_type		ndiode \
+  	    dev_contact_type	ndic \
+  	    end_type		psd \
+  	    end_contact_type	psc \
+  	    end_sub_type	psub \
+  	    dev_spacing		${diff_spacing} \
+  	    dev_surround	${diff_surround} \
+  	    end_spacing		${diff_spacing} \
+  	    end_surround	0 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::diode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__diode_pw2nd_05v5_lvt_draw  (lines 1767–1787) ──
+  proc sky130::sky130_fd_pr__diode_pw2nd_05v5_lvt_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    dev_type		ndiodelvt \
+  	    dev_contact_type	ndilvtc \
+  	    end_type		ppd \
+  	    end_contact_type	psc \
+  	    end_sub_type	psub \
+  	    dev_spacing		${diff_spacing} \
+  	    dev_surround	${diff_surround} \
+  	    end_spacing		${diff_spacing} \
+  	    end_surround	${diff_surround} \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::diode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__diode_pw2nd_05v5_nvt_draw  (lines 1789–1809) ──
+  proc sky130::sky130_fd_pr__diode_pw2nd_05v5_nvt_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    dev_type		nndiode \
+  	    dev_contact_type	nndic \
+  	    end_type		mvpsd \
+  	    end_contact_type	mvpsc \
+  	    end_sub_type	psub \
+  	    dev_spacing		0.37 \
+  	    dev_surround	${diff_surround} \
+  	    end_spacing		0.30 \
+  	    end_surround	${diff_surround} \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::diode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__diode_pw2nd_11v0_draw  (lines 1811–1832) ──
+  proc sky130::sky130_fd_pr__diode_pw2nd_11v0_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    dev_type		mvndiode \
+  	    dev_contact_type	mvndic \
+  	    end_type		mvpsd \
+  	    end_contact_type	mvpsc \
+  	    end_sub_type	psub \
+  	    diff_spacing	0.37 \
+  	    dev_spacing		0.39 \
+  	    dev_surround	${diff_surround} \
+  	    end_spacing		0.36 \
+  	    end_surround	${diff_surround} \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::diode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__diode_pd2nw_05v5_draw  (lines 1837–1861) ──
+  proc sky130::sky130_fd_pr__diode_pd2nw_05v5_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    dev_type		pdiode \
+  	    guard		1 \
+  	    dev_contact_type	pdic \
+  	    end_type		nsd \
+  	    end_contact_type	nsc \
+  	    end_sub_type	nwell \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    sub_type		psub \
+  	    dev_spacing		${diff_spacing} \
+  	    dev_surround	${diff_surround} \
+  	    end_spacing		${diff_spacing} \
+  	    end_surround	0 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::diode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__diode_pd2nw_05v5_lvt_draw  (lines 1865–1889) ──
+  proc sky130::sky130_fd_pr__diode_pd2nw_05v5_lvt_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    dev_type		pdiodelvt \
+  	    guard		1 \
+  	    dev_contact_type	pdilvtc \
+  	    end_type		nnd \
+  	    end_contact_type	nsc \
+  	    end_sub_type	nwell \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    sub_type		psub \
+  	    dev_spacing		${diff_spacing} \
+  	    dev_surround	${diff_surround} \
+  	    end_spacing		${diff_spacing} \
+  	    end_surround	${diff_surround} \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::diode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__diode_pd2nw_05v5_hvt_draw  (lines 1893–1917) ──
+  proc sky130::sky130_fd_pr__diode_pd2nw_05v5_hvt_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    dev_type		pdiodehvt \
+  	    guard		1 \
+  	    dev_contact_type	pdihvtc \
+  	    end_type		nnd \
+  	    end_contact_type	nsc \
+  	    end_sub_type	nwell \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    sub_type		psub \
+  	    dev_spacing		${diff_spacing} \
+  	    dev_surround	${diff_surround} \
+  	    end_spacing		${diff_spacing} \
+  	    end_surround	${diff_surround} \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::diode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__diode_pd2nw_11v0_draw  (lines 1922–1948) ──
+  proc sky130::sky130_fd_pr__diode_pd2nw_11v0_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    guard		1 \
+  	    dev_type 		mvpdiode \
+  	    dev_contact_type	mvpdic \
+  	    end_type		mvnsd \
+  	    end_contact_type	mvnsc \
+  	    end_sub_type	nwell \
+  	    plus_diff_type	mvpsd \
+  	    plus_contact_type	mvpsc \
+  	    sub_type		psub \
+  	    diff_spacing	0.58 \
+  	    dev_spacing		0.37 \
+  	    dev_surround	${diff_surround} \
+  	    end_spacing		0.30 \
+  	    end_sub_surround	0.33 \
+  	    end_surround	${diff_surround} \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::diode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__photodiode_draw  (lines 1954–1973) ──
+  proc sky130::sky130_fd_pr__photodiode_draw {parameters} {
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    guard		1	\
+  	    sub_type		space	\
+  	    end_spacing		5.0	\
+  	    end_surround	1.0	\
+  	    sub_spacing		5.3	\
+  	    guard_sub_type	pwell	\
+  	    guard_sub_surround  0.18	\
+  	    plus_diff_type	psd	\
+  	    plus_contact_type	psc	\
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::photodiode_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__cap_mim_m3_1_draw  (lines 2680–2716) ──
+  proc sky130::sky130_fd_pr__cap_mim_m3_1_draw {parameters} {
+      set stack 0
+  
+      # Set a local variable for each parameter
+      foreach key [dict keys $parameters] {
+          set $key [dict get $parameters $key]
+      }
+      if {$stack} {
+  	# For cap stacking, dimensions are increased to match the mim2 device
+  	set capspace 1.6
+  	set capextra 1.83
+  	set endspace 1.5
+      } else {
+  	set capspace 1.2
+  	set capextra 0.0
+  	set endspace 1.2
+      }
+  
+      set newdict [dict create \
+  	    top_type 		m4 \
+  	    top_contact_type	via3 \
+  	    cap_type 		mimcap \
+  	    cap_contact_type	mimcc \
+  	    bot_type 		m3 \
+  	    bot_surround	0.2 \
+  	    cap_spacing		${capspace} \
+  	    extra_spacing	${capextra} \
+  	    cap_surround	0.2 \
+  	    top_surround	0.005 \
+  	    end_surround	0.1 \
+  	    end_spacing		${endspace} \
+  	    contact_size	0.32 \
+  	    metal_surround	0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::cap_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__cap_mim_m3_2_draw  (lines 2718–2738) ──
+  proc sky130::sky130_fd_pr__cap_mim_m3_2_draw {parameters} {
+      set newdict [dict create \
+  	    top_type 		m5 \
+  	    top_contact_type	via4 \
+  	    cap_type 		mimcap2 \
+  	    cap_contact_type	mim2cc \
+  	    bot_type 		m4 \
+  	    bot_surround	0.4 \
+  	    cap_spacing		1.2 \
+  	    cap_surround	0.2 \
+  	    top_surround	0.12 \
+  	    end_surround	0.1 \
+  	    end_spacing		2.0 \
+  	    contact_size	1.18 \
+  	    metal_surround	0.21 \
+  	    top_metal_width	1.6 \
+  	    top_metal_space	0.7 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::cap_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_po_draw  (lines 3943–4008) ──
+  proc sky130::sky130_fd_pr__res_generic_po_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+      } else {
+  	set gsubtype psub
+      }
+  
+      set newdict [dict create \
+  	    res_type		npres \
+  	    end_type 		poly \
+  	    end_contact_type	pc \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		0.48 \
+  	    end_to_end_space	0.52 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		$poly_spacing \
+  	    res_diff_spacing	0.48 \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+      ]
+  
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_high_po_0p35_draw  (lines 4012–4083) ──
+  proc sky130::sky130_fd_pr__res_high_po_0p35_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.785
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		ppres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	-2.16 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_high_po_0p69_draw  (lines 4085–4156) ──
+  proc sky130::sky130_fd_pr__res_high_po_0p69_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.615
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		ppres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_high_po_1p41_draw  (lines 4158–4229) ──
+  proc sky130::sky130_fd_pr__res_high_po_1p41_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.525
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		ppres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_high_po_2p85_draw  (lines 4231–4302) ──
+  proc sky130::sky130_fd_pr__res_high_po_2p85_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.525
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		ppres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_high_po_5p73_draw  (lines 4304–4375) ──
+  proc sky130::sky130_fd_pr__res_high_po_5p73_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.525
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		ppres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_xhigh_po_0p35_draw  (lines 4379–4450) ──
+  proc sky130::sky130_fd_pr__res_xhigh_po_0p35_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.785
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		xpres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_xhigh_po_0p35_draw  (lines 4454–4525) ──
+  proc sky130::sky130_fd_pr__res_xhigh_po_0p35_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.785
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		xpres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_xhigh_po_0p69_draw  (lines 4527–4598) ──
+  proc sky130::sky130_fd_pr__res_xhigh_po_0p69_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.615
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		xpres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_xhigh_po_1p41_draw  (lines 4600–4671) ──
+  proc sky130::sky130_fd_pr__res_xhigh_po_1p41_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.525
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		xpres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_xhigh_po_2p85_draw  (lines 4673–4744) ──
+  proc sky130::sky130_fd_pr__res_xhigh_po_2p85_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.525
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		xpres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_xhigh_po_5p73_draw  (lines 4746–4817) ──
+  proc sky130::sky130_fd_pr__res_xhigh_po_5p73_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      # Handle options related to guard ring type (high/low voltage, nwell/psub)
+      if {[dict exists $parameters hv_guard]} {
+  	set use_hv_guard [dict get $parameters hv_guard]
+      } else {
+  	set use_hv_guard 0
+      }
+      if {[dict exists $parameters n_guard]} {
+  	set use_n_guard [dict get $parameters n_guard]
+      } else {
+  	set use_n_guard 0
+      }
+  
+      if {$use_hv_guard == 1} {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype mvnsd
+  	    set gdiffcont mvnsc
+  	} else {
+  	    set gdifftype mvpsd
+  	    set gdiffcont mvpsc
+  	}
+  	set gsurround 0.33
+      } else {
+  	if {$use_n_guard == 1} {
+  	    set gdifftype nsd
+  	    set gdiffcont nsc
+  	} else {
+  	    set gdifftype psd
+  	    set gdiffcont psc
+  	}
+  	set gsurround $sub_surround
+      }
+      if {$use_n_guard == 1} {
+  	set gsubtype nwell
+  	set gresdiff_spacing 0.525
+  	set gresdiff_end 0.525
+      } else {
+  	set gsubtype psub
+  	set gresdiff_spacing 0.48
+  	set gresdiff_end 0.48
+      }
+  
+      set newdict [dict create \
+  	    res_type		xpres \
+  	    end_type 		xpc \
+  	    end_contact_type	xpc \
+  	    end_contact_size	0 \
+  	    plus_diff_type	$gdifftype \
+  	    plus_contact_type	$gdiffcont \
+  	    sub_type		$gsubtype \
+  	    guard_sub_surround	$gsurround \
+  	    end_surround	$poly_surround \
+  	    end_spacing		$gresdiff_end \
+  	    end_to_end_space	0.52 \
+  	    end_contact_size	0.19 \
+  	    res_to_cont		0.575 \
+  	    res_to_endcont	1.985 \
+  	    res_spacing		0.48 \
+  	    res_diff_spacing	$gresdiff_spacing \
+  	    mask_clearance	0.52 \
+  	    overlap_compress	0.36 \
+  	    l_delta		-0.08 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_nd_draw  (lines 4821–4845) ──
+  proc sky130::sky130_fd_pr__res_generic_nd_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    res_type		rdn \
+  	    end_type 		ndiff \
+  	    end_contact_type	ndc \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    sub_type		psub \
+  	    end_surround	$diff_surround \
+  	    end_spacing		0.44 \
+  	    res_to_endcont	0.37 \
+  	    res_spacing		0.30 \
+  	    res_diff_spacing	0.44 \
+  	    mask_clearance	0.22 \
+  	    overlap_compress	0.36 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_nd__hv_draw  (lines 4849–4873) ──
+  proc sky130::sky130_fd_pr__res_generic_nd__hv_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    res_type		mvrdn \
+  	    end_type 		mvndiff \
+  	    end_contact_type	mvndc \
+  	    plus_diff_type	mvpsd \
+  	    plus_contact_type	mvpsc \
+  	    sub_type		psub \
+  	    end_surround	$diff_surround \
+  	    end_spacing		0.44 \
+  	    res_to_endcont	0.37 \
+  	    res_spacing		0.30 \
+  	    res_diff_spacing	0.44 \
+  	    mask_clearance	0.22 \
+  	    overlap_compress	0.36 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_pd_draw  (lines 4877–4901) ──
+  proc sky130::sky130_fd_pr__res_generic_pd_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    res_type		rdp \
+  	    end_type 		pdiff \
+  	    end_contact_type	pdc \
+  	    plus_diff_type	nsd \
+  	    plus_contact_type	nsc \
+  	    sub_type		nwell \
+  	    end_surround	$diff_surround \
+  	    end_spacing		0.44 \
+  	    res_to_endcont	0.37 \
+  	    res_spacing		$diff_spacing \
+  	    res_diff_spacing	0.44 \
+  	    mask_clearance	0.22 \
+  	    overlap_compress	0.36 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_pd__hv_draw  (lines 4905–4930) ──
+  proc sky130::sky130_fd_pr__res_generic_pd__hv_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    res_type		mvrdp \
+  	    end_type 		mvpdiff \
+  	    end_contact_type	mvpdc \
+  	    plus_diff_type	mvnsd \
+  	    plus_contact_type	mvnsc \
+  	    sub_type		nwell \
+  	    end_surround	$diff_surround \
+  	    guard_sub_surround	0.33 \
+  	    end_spacing		0.44 \
+  	    res_to_endcont	0.37 \
+  	    res_spacing		0.30 \
+  	    res_diff_spacing	0.44 \
+  	    mask_clearance	0.22 \
+  	    overlap_compress	0.36 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_iso_pw_draw  (lines 4934–4965) ──
+  proc sky130::sky130_fd_pr__res_iso_pw_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    well_res_type	pwell \
+  	    res_type		rpw \
+  	    end_type 		psd \
+  	    end_contact_type	psc \
+  	    plus_diff_type	nsd \
+  	    plus_contact_type	nsc \
+  	    sub_type		dnwell \
+  	    sub_surround	0.23 \
+  	    guard_sub_type	nwell \
+  	    guard_sub_surround	0.63 \
+  	    end_surround	$diff_surround \
+  	    end_spacing		0.63 \
+  	    end_to_end_space	1.15 \
+  	    end_overlap_cont	0.06 \
+  	    end_contact_size	0.53 \
+  	    overlap_compress	-0.17 \
+  	    res_to_endcont	0.265 \
+  	    res_spacing		1.4 \
+  	    res_diff_spacing	0.63 \
+  	    well_res_overlap	0.2 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_l1_draw  (lines 4969–4988) ──
+  proc sky130::sky130_fd_pr__res_generic_l1_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    guard		0 \
+  	    res_type		rli \
+  	    end_type 		li \
+  	    end_surround	0.0 \
+  	    end_spacing		0.0 \
+  	    res_to_endcont	0.2 \
+  	    end_to_end_space	0.23 \
+  	    res_spacing		$metal_spacing \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_m1_draw  (lines 4992–5011) ──
+  proc sky130::sky130_fd_pr__res_generic_m1_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    guard		0 \
+  	    res_type		rm1 \
+  	    end_type 		m1 \
+  	    end_surround	0.0 \
+  	    end_spacing		0.0 \
+  	    end_to_end_space	0.28 \
+  	    res_to_endcont	0.2 \
+  	    res_spacing		$mmetal_spacing \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_m2_draw  (lines 5015–5034) ──
+  proc sky130::sky130_fd_pr__res_generic_m2_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    guard		0 \
+  	    res_type		rm2 \
+  	    end_type 		m2 \
+  	    end_surround	0.0 \
+  	    end_spacing		0.0 \
+  	    end_to_end_space	0.28 \
+  	    res_to_endcont	0.2 \
+  	    res_spacing		$mmetal_spacing \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_m3_draw  (lines 5038–5057) ──
+  proc sky130::sky130_fd_pr__res_generic_m3_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    guard		0 \
+  	    res_type		rm3 \
+  	    end_type 		m3 \
+  	    end_surround	0.0 \
+  	    end_spacing		0.0 \
+  	    end_to_end_space	0.28 \
+  	    res_to_endcont	0.2 \
+  	    res_spacing		$mmetal_spacing \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_m4_draw  (lines 5061–5080) ──
+  proc sky130::sky130_fd_pr__res_generic_m4_draw {parameters} {
+  
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    guard		0 \
+  	    res_type		rm4 \
+  	    end_type 		m4 \
+  	    end_surround	0.0 \
+  	    end_spacing		0.0 \
+  	    end_to_end_space	0.28 \
+  	    res_to_endcont	0.2 \
+  	    res_spacing		$mmetal_spacing \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__res_generic_m5_draw  (lines 5082–5100) ──
+  proc sky130::sky130_fd_pr__res_generic_m5_draw {parameters} {
+      # Set a local variable for each rule in ruleset
+      foreach key [dict keys $sky130::ruleset] {
+          set $key [dict get $sky130::ruleset $key]
+      }
+  
+      set newdict [dict create \
+  	    guard		0 \
+  	    res_type		rm5 \
+  	    end_type 		m5 \
+  	    end_surround	0.0 \
+  	    end_spacing		0.0 \
+  	    end_to_end_space	1.6 \
+  	    res_to_endcont	0.2 \
+  	    res_spacing		$mmetal_spacing \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::res_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__nfet_01v8_draw  (lines 7151–7166) ──
+  proc sky130::sky130_fd_pr__nfet_01v8_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		nfet \
+  	    diff_type 		ndiff \
+  	    diff_contact_type	ndc \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    min_effl		0.185 \
+  	    min_allc		0.26 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__nfet_01v8_lvt_draw  (lines 7168–7183) ──
+  proc sky130::sky130_fd_pr__nfet_01v8_lvt_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		nfetlvt \
+  	    diff_type 		ndiff \
+  	    diff_contact_type	ndc \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    min_effl		0.185 \
+  	    min_allc		0.26 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_bs_flash__special_sonosfet_star_draw  (lines 7185–7202) ──
+  proc sky130::sky130_fd_bs_flash__special_sonosfet_star_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		nsonos \
+  	    diff_type 		ndiff \
+  	    diff_contact_type	ndc \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    id_type		dnwell \
+  	    id_surround		1.355 \
+  	    min_effl		0.185 \
+  	    min_allc		0.26 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__pfet_01v8_draw  (lines 7208–7225) ──
+  proc sky130::sky130_fd_pr__pfet_01v8_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		pfet \
+  	    diff_type 		pdiff \
+  	    diff_contact_type	pdc \
+  	    plus_diff_type	nsd \
+  	    plus_contact_type	nsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		nwell \
+  	    dev_sub_type	nwell \
+  	    gate_to_polycont	0.32 \
+  	    min_effl		0.185 \
+  	    min_allc		0.26 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__pfet_01v8_lvt_draw  (lines 7227–7244) ──
+  proc sky130::sky130_fd_pr__pfet_01v8_lvt_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		pfetlvt \
+  	    diff_type 		pdiff \
+  	    diff_contact_type	pdc \
+  	    plus_diff_type	nsd \
+  	    plus_contact_type	nsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		nwell \
+  	    dev_sub_type	nwell \
+  	    gate_to_polycont	0.32 \
+  	    min_effl		0.185 \
+  	    min_allc		0.26 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__pfet_01v8_hvt_draw  (lines 7246–7263) ──
+  proc sky130::sky130_fd_pr__pfet_01v8_hvt_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		pfethvt \
+  	    diff_type 		pdiff \
+  	    diff_contact_type	pdc \
+  	    plus_diff_type	nsd \
+  	    plus_contact_type	nsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		nwell \
+  	    dev_sub_type	nwell \
+  	    gate_to_polycont	0.32 \
+  	    min_effl		0.185 \
+  	    min_allc		0.26 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__pfet_g5v0d10v5_draw  (lines 7269–7288) ──
+  proc sky130::sky130_fd_pr__pfet_g5v0d10v5_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		mvpfet \
+  	    diff_type 		mvpdiff \
+  	    diff_contact_type	mvpdc \
+  	    plus_diff_type	mvnsd \
+  	    plus_contact_type	mvnsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		nwell \
+  	    dev_sub_type	nwell \
+  	    guard_sub_surround	0.33 \
+  	    gate_to_polycont	0.32 \
+  	    diff_spacing	0.31 \
+  	    diff_tap_space	0.38 \
+  	    diff_gate_space	0.38 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__nfet_g5v0d10v5_draw  (lines 7294–7311) ──
+  proc sky130::sky130_fd_pr__nfet_g5v0d10v5_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		mvnfet \
+  	    diff_type 		mvndiff \
+  	    diff_contact_type	mvndc \
+  	    plus_diff_type	mvpsd \
+  	    plus_contact_type	mvpsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    diff_spacing	0.31 \
+  	    diff_tap_space	0.38 \
+  	    diff_gate_space	0.38 \
+  	    set_x_to_guard	0.535 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__nfet_05v0_nvt_draw  (lines 7313–7329) ──
+  proc sky130::sky130_fd_pr__nfet_05v0_nvt_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		mvnnfet \
+  	    diff_type 		mvndiff \
+  	    diff_contact_type	mvndc \
+  	    plus_diff_type	mvpsd \
+  	    plus_contact_type	mvpsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    diff_spacing	0.30 \
+  	    diff_tap_space	0.38 \
+  	    diff_gate_space	0.38 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__nfet_03v3_nvt_draw  (lines 7331–7347) ──
+  proc sky130::sky130_fd_pr__nfet_03v3_nvt_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		nnfet \
+  	    diff_type 		mvndiff \
+  	    diff_contact_type	mvndc \
+  	    plus_diff_type	mvpsd \
+  	    plus_contact_type	mvpsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    diff_spacing	0.30 \
+  	    diff_tap_space	0.38 \
+  	    diff_gate_space	0.38 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__cap_var_lvt_draw  (lines 7353–7372) ──
+  proc sky130::sky130_fd_pr__cap_var_lvt_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		var \
+  	    diff_type 		nnd \
+  	    diff_contact_type	nsc \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    dev_sub_type	nwell \
+  	    diff_overlap_cont	0.06 \
+  	    dev_sub_dist	0.14 \
+  	    dev_sub_space	1.27 \
+  	    gate_to_diffcont	0.34 \
+  	    diff_extension	0.485 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__cap_var_hvt_draw  (lines 7374–7393) ──
+  proc sky130::sky130_fd_pr__cap_var_hvt_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		varhvt \
+  	    diff_type 		nnd \
+  	    diff_contact_type	nsc \
+  	    plus_diff_type	psd \
+  	    plus_contact_type	psc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    dev_sub_type	nwell \
+  	    diff_overlap_cont	0.06 \
+  	    dev_sub_dist	0.14 \
+  	    dev_sub_space	1.27 \
+  	    gate_to_diffcont	0.34 \
+  	    diff_extension	0.485 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__cap_var_draw  (lines 7401–7423) ──
+  proc sky130::sky130_fd_pr__cap_var_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		mvvar \
+  	    diff_type 		mvnsd \
+  	    diff_contact_type	mvnsc \
+  	    plus_diff_type	mvpsd \
+  	    plus_contact_type	mvpsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    dev_sub_type	nwell \
+  	    sub_surround	0.38 \
+  	    sub_surround_dev	0.56 \
+  	    guard_sub_surround	0.18 \
+  	    diff_overlap_cont	0.06 \
+  	    dev_sub_dist	0.785 \
+  	    dev_sub_space	2.0 \
+  	    gate_to_diffcont	0.34 \
+  	    diff_extension	0.485 \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__nfet_g5v0d16v0_draw  (lines 7429–7449) ──
+  proc sky130::sky130_fd_pr__nfet_g5v0d16v0_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		mvnfet \
+  	    diff_type 		mvndiff \
+  	    diff_contact_type	mvndc \
+  	    plus_diff_type	mvpsd \
+  	    plus_contact_type	mvpsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		psub \
+  	    diff_spacing	0.31 \
+  	    diff_tap_space	0.38 \
+  	    diff_gate_space	0.38 \
+  	    drain_diff_surround 0.045 \
+  	    set_x_to_guard	1.665 \
+  	    set_y_to_guard	1.225 \
+  	    drain_proc		sky130::draw_ldnmos_drain \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }
+
+── PROC: sky130::sky130_fd_pr__pfet_g5v0d16v0_draw  (lines 7451–7475) ──
+  proc sky130::sky130_fd_pr__pfet_g5v0d16v0_draw {parameters} {
+      set newdict [dict create \
+  	    gate_type		mvpfet \
+  	    diff_type 		mvpdiff \
+  	    diff_contact_type	mvpdc \
+  	    plus_diff_type	mvnsd \
+  	    plus_contact_type	mvnsc \
+  	    poly_type		poly \
+  	    poly_contact_type	pc \
+  	    sub_type		nwell \
+  	    id_type		nwell \
+  	    id_surround		0.035 \
+  	    guard_sub_surround	0.33 \
+  	    gate_to_polycont	0.32 \
+  	    diff_spacing	0.31 \
+  	    diff_tap_space	0.38 \
+  	    diff_gate_space	0.38 \
+  	    drain_diff_surround 0.045 \
+  	    set_x_to_guard	1.665 \
+  	    set_y_to_guard	1.180 \
+  	    drain_proc		sky130::draw_ldpmos_drain \
+      ]
+      set drawdict [dict merge $sky130::ruleset $newdict $parameters]
+      return [sky130::mos_draw $drawdict]
+  }

@@ -44,10 +44,10 @@ python3 sky130_area_estimator.py --netlist /path/to/your_design.spice
 
 ### 2. Area Estimation with Budgeting
 
-If a specific area budget has been assigned to your block, you can provide it to the script using the `--budget` flag (in square micrometers). The script will calculate the utilization percentage and indicate the remaining available area.
+If a specific area budget has been assigned to your block, you can provide it to the script using the `--budget` flag. You can provide the budget as a total area (e.g., `16000`) or as X and Y dimensions (e.g., `"100x150"`, `"130um x 130um"`, or `"100 vs 150"`). The script will parse the dimensions, calculate the utilization percentage, and indicate the remaining available area.
 
 ```bash
-python3 sky130_area_estimator.py --netlist /path/to/your_design.spice --budget 16000
+python3 sky130_area_estimator.py --netlist /path/to/your_design.spice --budget "130um x 130um"
 ```
 
 **Example Output:**

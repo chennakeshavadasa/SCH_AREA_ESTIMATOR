@@ -331,6 +331,22 @@ def print_report(r: dict):
 # CLI
 # ─────────────────────────────────────────────────────────────────────────────
 
+def parse_budget(b_str: str) -> float:
+    import re
+    s = b_str.lower().replace("um", "").strip()
+    if "x" in s or "vs" in s or "*" in s:
+        parts = re.split(r"x|vs|\*", s)
+        if len(parts) == 2:
+            try:
+                return float(parts[0].strip()) * float(parts[1].strip())
+            except ValueError:
+                pass
+    try:
+        return float(s)
+    except ValueError:
+        print(f"[ERROR] Invalid budget format: '{b_str}'. Use e.g. '16000' or '100x150'")
+        sys.exit(1)
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--netlist", required=True, help="Path to .spice netlist")
@@ -338,8 +354,8 @@ def main():
                    help="device_db.json from sky130_measure_devices.py")
     p.add_argument("--routing", type=float, default=1.30,
                    help="Routing overhead multiplier (default 1.30)")
-    p.add_argument("--budget",  type=float, default=None,
-                   help="Total layout area budget available (in um^2)")
+    p.add_argument("--budget",  type=str, default=None,
+                   help="Total layout area budget available (e.g. '16000' or '100x150')")
     p.add_argument("--json",    action="store_true",
                    help="Output raw JSON instead of table")
     p.add_argument("--out",     default="",
@@ -358,9 +374,10 @@ def main():
     else:
         print_report(report)
         if args.budget is not None:
-            left = args.budget - report["total_area_um2"]
-            pct = (report["total_area_um2"] / args.budget) * 100
-            print(f"  {'Area Budget Allowed':38} {'':22} {args.budget:>10.2f} µm²")
+            budget_val = parse_budget(args.budget)
+            left = budget_val - report["total_area_um2"]
+            pct = (report["total_area_um2"] / budget_val) * 100
+            print(f"  {'Area Budget Allowed':38} {'':22} {budget_val:>10.2f} µm²")
             print(f"  {'Area Left Over':38} {'':22} {left:>10.2f} µm²")
             print(f"  {'Utilization':38} {'':22} {pct:>10.1f} %")
             if left < 0:
@@ -372,7 +389,6 @@ def main():
     if args.out:
         Path(args.out).write_text(json.dumps(report, indent=2))
         print(f"\n[SAVED] {args.out}")
-
 
 if __name__ == "__main__":
     main()

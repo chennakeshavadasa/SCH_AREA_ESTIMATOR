@@ -16,7 +16,23 @@ The files within this repository are organized as follows:
 
 ---
 
-## Usage Guide
+## Quickstart Guide for Beginners
+
+If you are new to the tool and simply wish to estimate the area of your design, follow these steps:
+
+1. **Open a terminal** and navigate to the directory where you cloned this repository.
+   ```bash
+   cd /path/to/SCH_AREA_ESTIMATOR
+   ```
+2. **Execute the estimator script**, providing the path to your target SPICE netlist.
+   ```bash
+   python3 sky130_area_estimator.py --netlist /path/to/your_design.spice
+   ```
+3. **Review the output**. The script will print the physical area of the devices, the routing overhead, and the total estimated square footprint directly to the terminal.
+
+---
+
+## Detailed Usage Guide
 
 ### 1. Standard Area Estimation
 

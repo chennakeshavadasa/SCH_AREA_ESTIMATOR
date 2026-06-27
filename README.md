@@ -69,6 +69,31 @@ python3 sky130_area_estimator.py --netlist /path/to/your_design.spice --budget 1
 
 ---
 
+## Mathematical Modeling Methodology
+
+The core strength of this estimator is that it avoids simplistic linear assumptions (which fail heavily on non-linear analog sizing) in favor of decoupled bounding-box dimension modeling.
+
+### 1. MOSFET Area Model
+Instead of modeling Area directly, the script models the physical **Height** and physical **Width** independently:
+- **Height (Y-axis):** Determined by the drawn width (`W`). Modeled as `Height = a * W + b`.
+- **Width (X-axis):** Determined by the drawn length (`L`) and number of fingers (`nf`). Modeled as `Width = c * (L * nf) + d * nf + e`.
+- **Area:** Calculated as the product of the independent dimensions: `Area = Height * Width`. 
+
+This guarantees estimation error stays below 2.5% even for extreme transistor sizes like `W=10, L=10, nf=10`.
+
+### 2. Resistor Area Model
+Polysilicon and diffusion resistors are modeled via linear regression across their drawn length, specific to their drawn width. 
+- **Area:** `Area = Slope * L + Intercept` (where Slope and Intercept are independently fit for every valid drawn Width in the PDK).
+
+### 3. Capacitor Area Model
+MIM and Varactor capacitors are modeled based on a fixed layout boundary overhead.
+- **Area:** `Area = (W + 2 * border) * (L + 2 * border)`
+
+### 4. BJT Model
+Bipolar Junction Transistors (BJTs) are provided in SKY130 as fixed-size macros. The database simply maps the discrete sizes to their exact static footprint.
+
+---
+
 ## Advanced Usage: Rebuilding the Database
 
 If you need to support custom device sizes outside the bounds of the existing database, or if you are adapting this tool for a modified PDK variant, you can regenerate the database locally. 

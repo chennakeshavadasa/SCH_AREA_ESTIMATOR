@@ -1,6 +1,6 @@
-# Schematic Area Estimator (SKY130 + GF180MCU)
+# Schematic Area Estimator (SKY130 + GF180MCU + IHP130)
 
-This tool provides analog and mixed-signal designers with a highly accurate method for estimating the physical layout area of a design directly from a SPICE netlist. It supports the **Skywater 130nm (SKY130)** and **GlobalFoundries 180nm (GF180MCU)** process design kits. It eliminates the need for premature layout generation when determining area budgets and floorplanning constraints.
+This tool provides analog and mixed-signal designers with a highly accurate method for estimating the physical layout area of a design directly from a SPICE netlist. It supports the **Skywater 130nm (SKY130)**, **GlobalFoundries 180nm (GF180MCU)**, and **IHP 130nm SG13G2 (IHP130)** process design kits. It eliminates the need for premature layout generation when determining area budgets and floorplanning constraints.
 
 ---
 
@@ -8,12 +8,15 @@ This tool provides analog and mixed-signal designers with a highly accurate meth
 
 The files within this repository are organized as follows:
 
-- **sky130_area_estimator.py**: The primary execution script for SKY130. It parses a target SPICE netlist, applies the mathematical area models, and outputs the total estimated area.
-- **gf180mcu_area_estimator.py**: The equivalent execution script for GF180MCU.
+- **sky130/sky130_area_estimator.py**: The primary execution script for SKY130. It parses a target SPICE netlist, applies the mathematical area models, and outputs the total estimated area.
+- **gf180/gf180mcu_area_estimator.py**: The equivalent execution script for GF180MCU.
+- **ihp130/ihp130_area_estimator.py**: The equivalent execution script for IHP130 SG13G2.
 - **sky130/device_db.json**: The pre-calculated database for SKY130. Contains all regression parameters and physical bounding-box dimensions required for SKY130 devices.
 - **gf180/device_db.json**: The pre-calculated database for GF180MCU. Currently ships with placeholder coefficients — rebuild with the measurement backend for real values (see [Advanced Usage](#advanced-usage-rebuilding-the-database) below).
+- **ihp130/device_db.json**: The pre-calculated database for IHP130 SG13G2. Contains fully measured coefficients for all devices (LV/HV MOSFETs, polysilicon resistors, MIM caps, and npn13g2/npn13g2l/npn13g2v HBTs).
 - **reports/**: Contains detailed reports (in both `.docx` and `.pdf` formats) documenting the mathematical models used and providing parity plots demonstrating their accuracy against actual physical layouts.
-- **scripts/**: Contains backend tools that interface with the Magic VLSI layout tool. `sky130_measure_devices.py` and `gf180mcu_measure_devices.py` measure physical device bounding boxes and perform regressions to generate their respective `device_db.json` files.
+- **sky130/scripts/**, **gf180/scripts/**, **ihp130/scripts/**: Backend tools that interface with the Magic VLSI layout tool. Each `<pdk>_measure_devices.py` measures physical device bounding boxes and performs regressions to generate the respective `device_db.json` files.
+- **ihp130/tests/**: Verification and sanity-check scripts for the IHP130 backend (`validate_db_and_estimator.py`, `verify_coefficients.py`, `ihp130_test_one_device.py`).
 - **tests/**: Contains legacy verification, plotting, and diagnostic scripts used during the development phase of the estimator.
 
 ---
@@ -32,13 +35,16 @@ cd /path/to/SCH_AREA_ESTIMATOR
 
 ```
 # SKY130
-python3 sky130_area_estimator.py --netlist /path/to/your_design.spice
+python3 sky130/sky130_area_estimator.py --netlist /path/to/your_design.spice
 
 # GF180MCU
-python3 gf180mcu_area_estimator.py --netlist /path/to/your_design.spice
+python3 gf180/gf180mcu_area_estimator.py --netlist /path/to/your_design.spice
+
+# IHP130 SG13G2
+python3 ihp130/ihp130_area_estimator.py --netlist /path/to/your_design.spice
 ```
 
-> **Note:** Use the estimator matching the PDK your netlist was generated in. Model name prefixes must match: `sky130_fd_pr__` for SKY130, and `gf180mcu_fd_pr__` for GF180MCU.
+> **Note:** Use the estimator matching the PDK your netlist was generated in. Model name prefixes must match: `sky130_fd_pr__` for SKY130, `gf180mcu_fd_pr__` for GF180MCU, and `sg13g2::` / `sg13_` for IHP130.
 
 3. **Review the output.** The script will print the physical area of the devices, the routing overhead, and the total estimated square footprint directly to the terminal.
 
@@ -146,10 +152,13 @@ This requires the Magic VLSI layout tool to be installed on your system. The `PD
 
 ```
 # SKY130
-cd scripts && PDK_ROOT=/path/to/pdk python3 sky130_measure_devices.py
+cd sky130/scripts && PDK_ROOT=/path/to/pdk python3 sky130_measure_devices.py
 
 # GF180MCU
-cd scripts && PDK_ROOT=/path/to/pdk python3 gf180mcu_measure_devices.py
+cd gf180/scripts && PDK_ROOT=/path/to/pdk python3 gf180mcu_measure_devices.py
+
+# IHP130 SG13G2
+cd ihp130/scripts && PDK_ROOT=/path/to/pdk python3 ihp130_measure_devices.py
 ```
 
 The script will automatically detect your PDK location using the `PDK_ROOT` environment variable. It operates Magic in batch mode (`-dnull`) to instantiate devices, extract exact physical bounding boxes, perform linear regression on the extracted dimensions, and update `device_db.json`.

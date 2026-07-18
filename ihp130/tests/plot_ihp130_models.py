@@ -1,447 +1,306 @@
 #!/usr/bin/env python3
-"""
-plot_ihp130_models.py
-=====================
-Generate device model plots for the IHP130 SG13G2 area estimator.
-Mirrors the style of the SKY130 plot_models.py:
-  - Parity scatter plot: measured vs predicted (blue circles, k-- perfect-fit line)
-  - Residual bar plot (% error per sweep point)
-  - Model curve overlay on measured data
-  - R² annotated on each plot
-
-Run from the ihp130/ directory:
-    python3 tests/plot_ihp130_models.py
-
-Plots are saved to ../reports/plots/
-"""
-
 import json
-import sys
-from pathlib import Path
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from pathlib import Path
 
-# ─── Paths ────────────────────────────────────────────────────────────────────
+# Paths
 SCRIPT_DIR = Path(__file__).resolve().parent
-IHP130_DIR = SCRIPT_DIR.parent          # ihp130/
-REPO_ROOT  = IHP130_DIR.parent          # repo root
-DB_PATH    = IHP130_DIR / "device_db.json"
-PLOTS_DIR  = REPO_ROOT / "reports" / "plots"
+IHP130_DIR = SCRIPT_DIR.parent
+REPO_ROOT = IHP130_DIR.parent
+DB_PATH = IHP130_DIR / "device_db.json"
+PLOTS_DIR = REPO_ROOT / "reports" / "plots"
 PLOTS_DIR.mkdir(parents=True, exist_ok=True)
 
 with open(DB_PATH) as f:
     db = json.load(f)
 
-# ─── Style (matching SKY130 plots) ────────────────────────────────────────────
-BLUE   = "#2563EB"
-RED    = "#DC2626"
-GREEN  = "#16A34A"
-ORANGE = "#EA580C"
-GRAY   = "#6B7280"
-GRID_KW = dict(linestyle=":", alpha=0.6, color="#D1D5DB")
-plt.rcParams.update({
-    "font.family": "sans-serif",
-    "font.size": 10,
-    "axes.spines.top": False,
-    "axes.spines.right": False,
-})
+# Styling
+try:
+    plt.style.use('seaborn-v0_8-whitegrid')
+except:
+    pass
 
-# ─── Helper: R² ───────────────────────────────────────────────────────────────
+IHP_BLUE = "#1A5276"
+SCATTER_ORANGE = "#E67E22"
+SCATTER_KW = dict(color=SCATTER_ORANGE, marker='o', s=36, alpha=0.8, edgecolor='w', lw=0.5, zorder=3)
+LINE_KW = dict(color=IHP_BLUE, lw=2, alpha=0.9, zorder=2)
+
 def r2_score(y_true, y_pred):
-    y_true = np.asarray(y_true)
-    y_pred = np.asarray(y_pred)
     ss_res = np.sum((y_true - y_pred)**2)
-    ss_tot = np.sum((y_true - y_true.mean())**2)
-    return 1.0 - ss_res / ss_tot if ss_tot > 1e-12 else 1.0
+    ss_tot = np.sum((y_true - np.mean(y_true))**2)
+    return 1 - (ss_res / ss_tot) if ss_tot > 1e-12 else 1.0
 
-def save(name):
-    path = PLOTS_DIR / name
-    plt.savefig(path, dpi=150, bbox_inches="tight")
+# ════════════════════════════════════════════════════════════════════════
+# FIG 1-4: MOSFETs
+# ════════════════════════════════════════════════════════════════════════
+for dev in ["sg13_lv_nmos", "sg13_lv_pmos", "sg13_hv_nmos", "sg13_hv_pmos"]:
+    if dev not in db["mosfets"]: continue
+    m = db["mosfets"][dev]["model"]
+    pts = db["mosfets"][dev]["sweep"]
+    
+    W_vals = np.array([p["w"] for p in pts])
+    L_vals = np.array([p["l"] for p in pts])
+    nf_vals = np.array([p["nf"] for p in pts])
+    area_vals = np.array([p["area_um2"] for p in pts])
+    
+    def mosfet_area(W, L, nf):
+        return (m["ah"]*W + m["bh"]) * (m["aw"]*L*nf + m["bw"]*nf + m["cw"])
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5), dpi=150)
+    fig.suptitle(f"{dev} Area Model", fontsize=14, fontweight='bold', color=IHP_BLUE)
+
+    # 1. Area vs W (L=Lmin, nf=1)
+    lmin = L_vals.min()
+    mask1 = (np.isclose(L_vals, lmin)) & (nf_vals == 1)
+    axes[0].scatter(W_vals[mask1], area_vals[mask1], label="Measured", **SCATTER_KW)
+    w_line = np.linspace(W_vals[mask1].min(), W_vals[mask1].max(), 50)
+    p_line = mosfet_area(w_line, lmin, 1)
+    r2_1 = r2_score(area_vals[mask1], mosfet_area(W_vals[mask1], lmin, 1))
+    axes[0].plot(w_line, p_line, label=f"Model (R²={r2_1:.4f})", **LINE_KW)
+    axes[0].set_xlabel("Width W (µm)"); axes[0].set_ylabel("Area (µm²)")
+    axes[0].set_title(f"Area vs W (L={lmin}µm, nf=1)")
+    axes[0].legend()
+
+    # 2. Area vs L (W=~2.0, nf=1)
+    target_w = 2.0
+    w_closest = W_vals[np.argmin(np.abs(W_vals - target_w))]
+    mask2 = (np.isclose(W_vals, w_closest)) & (nf_vals == 1)
+    if any(mask2):
+        axes[1].scatter(L_vals[mask2], area_vals[mask2], **SCATTER_KW)
+        l_line = np.linspace(L_vals[mask2].min(), L_vals[mask2].max(), 50)
+        p_line = mosfet_area(w_closest, l_line, 1)
+        r2_2 = r2_score(area_vals[mask2], mosfet_area(w_closest, L_vals[mask2], 1))
+        axes[1].plot(l_line, p_line, label=f"Model (R²={r2_2:.4f})", **LINE_KW)
+        axes[1].set_title(f"Area vs L (W={w_closest}µm, nf=1)")
+        axes[1].legend()
+    axes[1].set_xlabel("Length L (µm)"); axes[1].set_ylabel("Area (µm²)")
+
+    # 3. Area vs nf (W=~2.0, L=Lmin)
+    mask3 = (np.isclose(W_vals, w_closest)) & (np.isclose(L_vals, lmin))
+    if any(mask3):
+        axes[2].scatter(nf_vals[mask3], area_vals[mask3], **SCATTER_KW)
+        nf_line = np.linspace(nf_vals[mask3].min(), nf_vals[mask3].max(), 50)
+        p_line = mosfet_area(w_closest, lmin, nf_line)
+        r2_3 = r2_score(area_vals[mask3], mosfet_area(w_closest, lmin, nf_vals[mask3]))
+        axes[2].plot(nf_line, p_line, label=f"Model (R²={r2_3:.4f})", **LINE_KW)
+        axes[2].set_title(f"Area vs nf (W={w_closest}µm, L={lmin}µm)")
+        axes[2].legend()
+    axes[2].set_xlabel("Fingers nf"); axes[2].set_ylabel("Area (µm²)")
+
+    plt.tight_layout()
+    plt.savefig(PLOTS_DIR / f"ihp130_{dev}.png")
     plt.close()
-    print(f"  Saved: {path.name}")
 
-# ══════════════════════════════════════════════════════════════════════════════
-# 1. MOSFET PLOTS
-# ══════════════════════════════════════════════════════════════════════════════
-def pred_mosfet(m, p):
-    W  = p.get("w", 0)
-    L  = p.get("l", 0)
-    nf = p.get("nf", 1)
-    mu = p.get("m", 1)
-    return (m["ah"]*W + m["bh"]) * (m["aw"]*L*nf + m["bw"]*nf + m["cw"]) * mu
-
-for dev, data in db["mosfets"].items():
-    pts = data.get("sweep", [])
-    if len(pts) < 3:
-        continue
-    m   = data["model"]
-    A   = np.array([p["area_um2"] for p in pts])
-    P   = np.array([pred_mosfet(m, p) for p in pts])
-    r2  = r2_score(A, P)
-    err = (P - A) / A * 100
-
-    fig = plt.figure(figsize=(12, 5))
-    gs  = gridspec.GridSpec(1, 2, figure=fig, wspace=0.35)
-
-    # ── Left: Parity plot ──────────────────────────────────────────────────
-    ax1 = fig.add_subplot(gs[0])
-    lim = [min(A.min(), P.min()) * 0.9, max(A.max(), P.max()) * 1.1]
-    ax1.plot(lim, lim, "k--", alpha=0.5, lw=1.2, label="Perfect Fit")
-    ax1.scatter(A, P, color=BLUE, marker="o", s=45, alpha=0.75,
-                edgecolors="white", lw=0.5, label="Bounding-Box Model")
-    ax1.set_xlim(lim); ax1.set_ylim(lim)
-    ax1.set_xlabel("Magic Measured Area (µm²)")
-    ax1.set_ylabel("Model Predicted Area (µm²)")
-    ax1.set_title(f"{dev}\nParity Plot  |  R²={r2:.6f}", fontsize=10, fontweight="bold")
-    ax1.legend(fontsize=8)
-    ax1.grid(**GRID_KW)
-    ax1.text(0.97, 0.05, f"R² = {r2:.6f}", transform=ax1.transAxes,
-             ha="right", va="bottom", fontsize=9, color=BLUE,
-             bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=BLUE, alpha=0.8))
-
-    # ── Right: Residual % bar chart ─────────────────────────────────────────
-    ax2 = fig.add_subplot(gs[1])
-    colors = [RED if abs(e) > 2 else BLUE for e in err]
-    ax2.bar(range(len(err)), err, color=colors, alpha=0.75, width=0.7)
-    ax2.axhline(0, color="black", lw=0.8)
-    ax2.axhline(+2, color=ORANGE, lw=0.8, ls="--", alpha=0.6, label="±2% band")
-    ax2.axhline(-2, color=ORANGE, lw=0.8, ls="--", alpha=0.6)
-    ax2.set_xlabel("Sweep Point Index")
-    ax2.set_ylabel("Residual Error (%)")
-    ax2.set_title(f"{dev}\nResidual Error  |  max={np.abs(err).max():.2f}%", fontsize=10, fontweight="bold")
-    ax2.legend(fontsize=8)
-    ax2.grid(**GRID_KW)
-
-    fig.suptitle(f"IHP130 SG13G2 — {dev} Area Model", fontsize=12, fontweight="bold", y=1.01)
-    save(f"plot_{dev}.png")
-    print(f"    {dev}: R²={r2:.6f}  max_err={np.abs(err).max():.2f}%  pts={len(pts)}")
-
-# ══════════════════════════════════════════════════════════════════════════════
-# 2. RESISTOR PLOTS
-# ══════════════════════════════════════════════════════════════════════════════
-def pred_resistor(model_entries, p):
-    W = p.get("w", 0)
-    L = p.get("l", 0)
-    entry = min(model_entries, key=lambda e: abs(e["w"] - W))
-    return entry["slope"] * L + entry["intercept"]
-
-RES_COLORS = {"0.5": BLUE, "1.0": GREEN, "2.0": ORANGE}
-
-for dev, data in db["resistors"].items():
-    pts    = data.get("sweep", [])
-    models = data.get("model", [])
-    if not pts or not models:
-        continue
-
-    A  = np.array([p["area_um2"] for p in pts])
-    P  = np.array([pred_resistor(models, p) for p in pts])
-    r2 = r2_score(A, P)
-    err = (P - A) / A * 100
-
-    fig = plt.figure(figsize=(14, 5))
-    gs  = gridspec.GridSpec(1, 3, figure=fig, wspace=0.35)
-
-    # ── Left: Area vs L per width ──────────────────────────────────────────
-    ax1 = fig.add_subplot(gs[0])
-    by_w = {}
+# ════════════════════════════════════════════════════════════════════════
+# FIG 5-7: Resistors
+# ════════════════════════════════════════════════════════════════════════
+colors = [IHP_BLUE, "#27AE60", "#8E44AD"]
+for dev in ["rsil", "rppd", "rhigh"]:
+    if dev not in db["resistors"]: continue
+    models = db["resistors"][dev]["model"]
+    pts = db["resistors"][dev]["sweep"]
+    
+    fig, ax = plt.subplots(figsize=(8, 5), dpi=150)
+    fig.suptitle(f"{dev} Area Model", fontsize=14, fontweight='bold', color=IHP_BLUE)
+    
+    w_groups = {}
     for p in pts:
-        w = p.get("w", 0)
-        by_w.setdefault(w, []).append(p)
+        w_groups.setdefault(p["w"], []).append(p)
+    
+    for i, (w, group) in enumerate(sorted(w_groups.items())):
+        c = colors[i % len(colors)]
+        L_vals = np.array([p["l"] for p in group])
+        area_vals = np.array([p["area_um2"] for p in group])
+        
+        m_entry = next((m for m in models if np.isclose(m["w"], w)), None)
+        if not m_entry: continue
+        
+        ax.scatter(L_vals, area_vals, color=SCATTER_ORANGE, marker='o', s=36, edgecolor='w', zorder=3)
+        l_line = np.linspace(L_vals.min(), L_vals.max(), 50)
+        p_line = m_entry["slope"] * l_line + m_entry["intercept"]
+        
+        preds = m_entry["slope"] * L_vals + m_entry["intercept"]
+        r2 = r2_score(area_vals, preds)
+        ax.plot(l_line, p_line, color=c, lw=2, label=f"W={w}µm (R²={r2:.4f})", zorder=2)
+        
+    ax.set_xlabel("Length L (µm)")
+    ax.set_ylabel("Area (µm²)")
+    ax.legend()
+    plt.tight_layout()
+    plt.savefig(PLOTS_DIR / f"ihp130_{dev}.png")
+    plt.close()
 
-    for w, wpts in sorted(by_w.items()):
-        L_arr = np.array([p.get("l", 0) for p in wpts])
-        A_arr = np.array([p["area_um2"]  for p in wpts])
-        col   = RES_COLORS.get(str(w), GRAY)
-        entry = min(models, key=lambda e: abs(e["w"] - w))
-        L_line = np.linspace(L_arr.min(), L_arr.max(), 80)
-        P_line = entry["slope"] * L_line + entry["intercept"]
-        ax1.scatter(L_arr, A_arr, color=col, marker="o", s=50, alpha=0.85,
-                    edgecolors="white", lw=0.5, zorder=3, label=f"W={w}µm (meas.)")
-        ax1.plot(L_line, P_line, color=col, lw=1.6, ls="-", alpha=0.7)
+# ════════════════════════════════════════════════════════════════════════
+# FIG 8: MIM Capacitor
+# ════════════════════════════════════════════════════════════════════════
+dev = "cap_cmim"
+if dev in db["mim_caps"]:
+    m = db["mim_caps"][dev]["model"]
+    pts = db["mim_caps"][dev]["sweep"]
+    b = m["border_um"]
+    
+    W_vals = np.array([p["w"] for p in pts])
+    L_vals = np.array([p["l"] for p in pts])
+    area_vals = np.array([p["area_um2"] for p in pts])
+    
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5), dpi=150)
+    fig.suptitle(f"{dev} Area Model (border_um={b:.4f})", fontsize=14, fontweight='bold', color=IHP_BLUE)
+    
+    # Left: vs W (L=5.0)
+    l_target = 5.0
+    mask1 = np.isclose(L_vals, l_target)
+    if any(mask1):
+        axes[0].scatter(W_vals[mask1], area_vals[mask1], label="Measured", **SCATTER_KW)
+        w_line = np.linspace(W_vals[mask1].min(), W_vals[mask1].max(), 50)
+        p_line = (w_line + 2*b) * (l_target + 2*b)
+        axes[0].plot(w_line, p_line, label="Model", **LINE_KW)
+        axes[0].set_title(f"Area vs W (L={l_target}µm)"); axes[0].set_xlabel("W (µm)"); axes[0].set_ylabel("Area (µm²)")
+        axes[0].legend()
+        
+    # Right: vs L (W=5.0)
+    w_target = 5.0
+    mask2 = np.isclose(W_vals, w_target)
+    if any(mask2):
+        axes[1].scatter(L_vals[mask2], area_vals[mask2], label="Measured", **SCATTER_KW)
+        l_line = np.linspace(L_vals[mask2].min(), L_vals[mask2].max(), 50)
+        p_line = (w_target + 2*b) * (l_line + 2*b)
+        axes[1].plot(l_line, p_line, label="Model", **LINE_KW)
+        axes[1].set_title(f"Area vs L (W={w_target}µm)"); axes[1].set_xlabel("L (µm)")
+        axes[1].legend()
 
-    ax1.set_xlabel("Length L (µm)")
-    ax1.set_ylabel("Area (µm²)")
-    ax1.set_title(f"{dev}\nArea vs L per Width", fontsize=10, fontweight="bold")
-    ax1.legend(fontsize=8)
-    ax1.grid(**GRID_KW)
+    plt.tight_layout()
+    plt.savefig(PLOTS_DIR / f"ihp130_{dev}.png")
+    plt.close()
 
-    # ── Middle: Parity plot ────────────────────────────────────────────────
-    ax2 = fig.add_subplot(gs[1])
-    lim = [min(A.min(), P.min()) * 0.9, max(A.max(), P.max()) * 1.1]
-    ax2.plot(lim, lim, "k--", alpha=0.5, lw=1.2, label="Perfect Fit")
-    ax2.scatter(A, P, color=BLUE, marker="o", s=45, alpha=0.75,
-                edgecolors="white", lw=0.5)
-    ax2.set_xlim(lim); ax2.set_ylim(lim)
-    ax2.set_xlabel("Measured Area (µm²)")
-    ax2.set_ylabel("Predicted Area (µm²)")
-    ax2.set_title(f"{dev}\nParity  |  R²={r2:.6f}", fontsize=10, fontweight="bold")
-    ax2.text(0.97, 0.05, f"R² = {r2:.6f}", transform=ax2.transAxes,
-             ha="right", va="bottom", fontsize=9, color=BLUE,
-             bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=BLUE, alpha=0.8))
-    ax2.legend(fontsize=8)
-    ax2.grid(**GRID_KW)
+# ════════════════════════════════════════════════════════════════════════
+# FIG 9: HBT Fixed (npn13g2)
+# ════════════════════════════════════════════════════════════════════════
+dev = "npn13g2"
+if dev in db["hbts"]:
+    m = db["hbts"][dev]["model"]
+    pts = db["hbts"][dev]["sweep"]
+    nx_vals = np.array([p["nx"] for p in pts])
+    area_vals = np.array([p["area_um2"] for p in pts])
+    
+    fig, ax = plt.subplots(figsize=(8, 5), dpi=150)
+    fig.suptitle(f"{dev} Area Model", fontsize=14, fontweight='bold', color=IHP_BLUE)
+    
+    ax.scatter(nx_vals, area_vals, label="Measured", **SCATTER_KW)
+    nx_line = np.linspace(nx_vals.min(), nx_vals.max(), 50)
+    p_line = m["fixed_h"] * (m["aw"] * nx_line + m["bw"])
+    r2 = r2_score(area_vals, m["fixed_h"] * (m["aw"] * nx_vals + m["bw"]))
+    ax.plot(nx_line, p_line, label=f"Model (R²={r2:.4f})", **LINE_KW)
+    
+    textstr = f"fixed_h = {m['fixed_h']:.4f}\naw = {m['aw']:.4f}\nbw = {m['bw']:.4f}"
+    ax.text(0.05, 0.95, textstr, transform=ax.transAxes, va='top', bbox=dict(facecolor='white', alpha=0.8, ec=IHP_BLUE))
+    ax.set_xlabel("nx"); ax.set_ylabel("Area (µm²)")
+    ax.legend()
+    plt.tight_layout()
+    plt.savefig(PLOTS_DIR / f"ihp130_{dev}.png")
+    plt.close()
 
-    # ── Right: Residual % ──────────────────────────────────────────────────
-    ax3 = fig.add_subplot(gs[2])
-    colors = [RED if abs(e) > 1 else BLUE for e in err]
-    ax3.bar(range(len(err)), err, color=colors, alpha=0.75, width=0.7)
-    ax3.axhline(0, color="black", lw=0.8)
-    ax3.axhline(+1, color=ORANGE, lw=0.8, ls="--", alpha=0.6, label="±1% band")
-    ax3.axhline(-1, color=ORANGE, lw=0.8, ls="--", alpha=0.6)
-    ax3.set_xlabel("Sweep Point Index")
-    ax3.set_ylabel("Residual Error (%)")
-    ax3.set_title(f"{dev}\nResidual Error", fontsize=10, fontweight="bold")
-    ax3.legend(fontsize=8)
-    ax3.grid(**GRID_KW)
+# ════════════════════════════════════════════════════════════════════════
+# FIG 10-11: HBT Variable
+# ════════════════════════════════════════════════════════════════════════
+for dev in ["npn13g2l", "npn13g2v"]:
+    if dev not in db["hbts"]: continue
+    m = db["hbts"][dev]["model"]
+    pts = db["hbts"][dev]["sweep"]
+    
+    l_vals = np.array([p["l"] for p in pts])
+    nx_vals = np.array([p["nx"] for p in pts])
+    area_vals = np.array([p["area_um2"] for p in pts])
+    
+    def hbt_area(l, nx):
+        return (m["ah"]*l + m["bh"]) * (m["aw"]*nx + m["bw"])
 
-    fig.suptitle(f"IHP130 SG13G2 — {dev} Resistor Model", fontsize=12, fontweight="bold", y=1.01)
-    save(f"plot_{dev}.png")
-    print(f"    {dev}: R²={r2:.6f}  max_err={np.abs(err).max():.2f}%  pts={len(pts)}")
+    fig = plt.figure(figsize=(10, 6), dpi=150)
+    ax = fig.add_subplot(111, projection='3d')
+    fig.suptitle(f"{dev} Area Model Surface", fontsize=14, fontweight='bold', color=IHP_BLUE)
+    
+    ax.scatter(l_vals, nx_vals, area_vals, color=SCATTER_ORANGE, s=50, edgecolor='w', alpha=1.0, label="Measured Data")
+    
+    l_grid, nx_grid = np.meshgrid(np.linspace(l_vals.min(), l_vals.max(), 20),
+                                  np.linspace(nx_vals.min(), nx_vals.max(), 20))
+    area_grid = hbt_area(l_grid, nx_grid)
+    
+    ax.plot_surface(l_grid, nx_grid, area_grid, color=IHP_BLUE, alpha=0.5, edgecolor='none')
+    ax.set_xlabel("l (µm)"); ax.set_ylabel("nx"); ax.set_zlabel("Area (µm²)")
+    
+    plt.tight_layout()
+    plt.savefig(PLOTS_DIR / f"ihp130_{dev}.png")
+    plt.close()
 
-# ══════════════════════════════════════════════════════════════════════════════
-# 3. MIM CAP PLOT
-# ══════════════════════════════════════════════════════════════════════════════
-def pred_cap(m, p):
-    W = p.get("w", 0); L = p.get("l", 0); b = m["border_um"]
-    return (W + 2*b) * (L + 2*b)
+# ════════════════════════════════════════════════════════════════════════
+# FIG 12: Residuals
+# ════════════════════════════════════════════════════════════════════════
+devs = []
+max_errs = []
+for cat in ["mosfets", "resistors", "mim_caps", "hbts"]:
+    for dev, data in db.get(cat, {}).items():
+        m = data["model"]
+        pts = data["sweep"]
+        if not pts: continue
+        A = np.array([p["area_um2"] for p in pts])
+        if cat == "mosfets":
+            P = np.array([(m["ah"]*p["w"]+m["bh"])*(m["aw"]*p["l"]*p["nf"]+m["bw"]*p["nf"]+m["cw"]) for p in pts])
+        elif cat == "resistors":
+            P = np.array([next(me for me in m if np.isclose(me["w"], p["w"]))["slope"] * p["l"] + 
+                          next(me for me in m if np.isclose(me["w"], p["w"]))["intercept"] for p in pts])
+        elif cat == "mim_caps":
+            P = np.array([(p["w"]+2*m["border_um"])*(p["l"]+2*m["border_um"]) for p in pts])
+        elif cat == "hbts":
+            if "fixed_h" in m: P = np.array([m["fixed_h"]*(m["aw"]*p["nx"]+m["bw"]) for p in pts])
+            else: P = np.array([(m["ah"]*p["l"]+m["bh"])*(m["aw"]*p["nx"]+m["bw"]) for p in pts])
+        err = np.abs((P - A) / A * 100).max()
+        devs.append(dev)
+        max_errs.append(err)
 
-for dev, data in db["mim_caps"].items():
-    pts = data.get("sweep", [])
-    m   = data.get("model", {})
-    if not pts or not m:
-        continue
-
-    A   = np.array([p["area_um2"] for p in pts])
-    P   = np.array([pred_cap(m, p) for p in pts])
-    r2  = r2_score(A, P)
-    err = (P - A) / A * 100
-    b   = m["border_um"]
-
-    fig = plt.figure(figsize=(12, 5))
-    gs  = gridspec.GridSpec(1, 2, figure=fig, wspace=0.35)
-
-    # ── Left: Area vs plate area with border model ─────────────────────────
-    ax1 = fig.add_subplot(gs[0])
-    plate = np.array([p.get("w",0)*p.get("l",0) for p in pts])
-    ax1.scatter(plate, A, color=BLUE, marker="o", s=60, alpha=0.85,
-                edgecolors="white", lw=0.5, zorder=3, label="Measured area")
-    plate_line = np.linspace(plate.min(), plate.max(), 100)
-    # Approximate: for square caps, W=L, plate=W², total=(W+2b)²
-    # Use a representative aspect ratio — just show model as function of plate
-    W_vals = np.sqrt(plate_line)
-    P_line = (W_vals + 2*b) * (W_vals + 2*b)
-    ax1.plot(plate_line, P_line, color=RED, lw=1.8, ls="-", alpha=0.8,
-             label=f"Model: (W+{2*b:.3f})·(L+{2*b:.3f})")
-    ax1.set_xlabel("Plate Area W·L (µm²)")
-    ax1.set_ylabel("Total Cell Area (µm²)")
-    ax1.set_title(f"{dev}\nArea vs Plate Area  |  border={b:.4f}µm", fontsize=10, fontweight="bold")
-    ax1.legend(fontsize=8)
-    ax1.grid(**GRID_KW)
-
-    # ── Right: Parity plot ─────────────────────────────────────────────────
-    ax2 = fig.add_subplot(gs[1])
-    lim = [min(A.min(), P.min()) * 0.9, max(A.max(), P.max()) * 1.1]
-    ax2.plot(lim, lim, "k--", alpha=0.5, lw=1.2, label="Perfect Fit")
-    ax2.scatter(A, P, color=BLUE, marker="o", s=60, alpha=0.8,
-                edgecolors="white", lw=0.5)
-    ax2.set_xlim(lim); ax2.set_ylim(lim)
-    ax2.set_xlabel("Measured Area (µm²)")
-    ax2.set_ylabel("Predicted Area (µm²)")
-    ax2.set_title(f"{dev}\nParity  |  R²={r2:.6f}", fontsize=10, fontweight="bold")
-    ax2.text(0.97, 0.05, f"R² = {r2:.6f}\nborder = {b:.4f}µm",
-             transform=ax2.transAxes, ha="right", va="bottom", fontsize=9, color=BLUE,
-             bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=BLUE, alpha=0.8))
-    ax2.legend(fontsize=8)
-    ax2.grid(**GRID_KW)
-
-    fig.suptitle(f"IHP130 SG13G2 — {dev} Capacitor Model", fontsize=12, fontweight="bold", y=1.01)
-    save(f"plot_{dev}.png")
-    print(f"    {dev}: R²={r2:.6f}  border={b:.4f}µm  pts={len(pts)}")
-
-# ══════════════════════════════════════════════════════════════════════════════
-# 4. HBT PLOTS
-# ══════════════════════════════════════════════════════════════════════════════
-def pred_hbt_fixed(m, p):
-    nx = p.get("nx", p.get("nf", 1))
-    mu = p.get("m", 1)
-    return m["fixed_h"] * (m["aw"]*nx + m["bw"]) * mu
-
-def pred_hbt_var(m, p):
-    l  = p.get("l", p.get("L", 0))
-    nx = p.get("nx", p.get("nf", 1))
-    mu = p.get("m", 1)
-    return (m["ah"]*l + m["bh"]) * (m["aw"]*nx + m["bw"]) * mu
-
-for dev, data in db["hbts"].items():
-    pts = data.get("sweep", [])
-    m   = data.get("model", {})
-    if not pts or not m:
-        continue
-
-    is_fixed = "fixed_h" in m
-    A  = np.array([p["area_um2"] for p in pts])
-    P  = np.array([(pred_hbt_fixed(m, p) if is_fixed else pred_hbt_var(m, p)) for p in pts])
-    r2 = r2_score(A, P)
-    err = (P - A) / A * 100
-
-    fig = plt.figure(figsize=(14, 5))
-    gs  = gridspec.GridSpec(1, 3, figure=fig, wspace=0.38)
-
-    # ── Left: Area vs nx (for fixed) or vs l (for var) ────────────────────
-    ax1 = fig.add_subplot(gs[0])
-    if is_fixed:
-        nx_arr = np.array([p.get("nx", p.get("nf", 1)) for p in pts])
-        ax1.scatter(nx_arr, A, color=BLUE, marker="o", s=60, alpha=0.85,
-                    edgecolors="white", lw=0.5, zorder=3, label="Measured")
-        nx_line = np.linspace(nx_arr.min(), nx_arr.max(), 80)
-        P_line  = m["fixed_h"] * (m["aw"]*nx_line + m["bw"])
-        ax1.plot(nx_line, P_line, color=RED, lw=1.8, alpha=0.8, label="Model")
-        ax1.set_xlabel("Number of Emitters nx")
-        ax1.set_title(f"{dev}\nArea vs nx", fontsize=10, fontweight="bold")
-    else:
-        l_arr  = np.array([p.get("l", p.get("L", 0)) for p in pts])
-        nx_arr = np.array([p.get("nx", p.get("nf", 1)) for p in pts])
-        sc = ax1.scatter(nx_arr, A, c=l_arr, cmap="viridis", marker="o", s=60,
-                         alpha=0.85, edgecolors="white", lw=0.5, zorder=3)
-        plt.colorbar(sc, ax=ax1, label="Emitter length l (µm)")
-        # Model curves per l value
-        for l_val in sorted(set(l_arr)):
-            nx_line = np.linspace(nx_arr.min(), nx_arr.max(), 80)
-            P_line  = (m["ah"]*l_val + m["bh"]) * (m["aw"]*nx_line + m["bw"])
-            ax1.plot(nx_line, P_line, lw=1.5, alpha=0.6)
-        ax1.set_xlabel("Number of Emitters nx")
-        ax1.set_title(f"{dev}\nArea vs nx (color=l)", fontsize=10, fontweight="bold")
-
-    ax1.set_ylabel("Area (µm²)")
-    ax1.legend(fontsize=8)
-    ax1.grid(**GRID_KW)
-
-    # ── Middle: Parity plot ────────────────────────────────────────────────
-    ax2 = fig.add_subplot(gs[1])
-    lim = [min(A.min(), P.min()) * 0.9, max(A.max(), P.max()) * 1.1]
-    ax2.plot(lim, lim, "k--", alpha=0.5, lw=1.2, label="Perfect Fit")
-    ax2.scatter(A, P, color=BLUE, marker="o", s=50, alpha=0.8,
-                edgecolors="white", lw=0.5)
-    ax2.set_xlim(lim); ax2.set_ylim(lim)
-    ax2.set_xlabel("Measured Area (µm²)")
-    ax2.set_ylabel("Predicted Area (µm²)")
-    ax2.set_title(f"{dev}\nParity  |  R²={r2:.6f}", fontsize=10, fontweight="bold")
-    ax2.text(0.97, 0.05, f"R² = {r2:.6f}", transform=ax2.transAxes,
-             ha="right", va="bottom", fontsize=9, color=BLUE,
-             bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=BLUE, alpha=0.8))
-    ax2.legend(fontsize=8)
-    ax2.grid(**GRID_KW)
-
-    # ── Right: Residual % ──────────────────────────────────────────────────
-    ax3 = fig.add_subplot(gs[2])
-    colors = [RED if abs(e) > 2 else BLUE for e in err]
-    ax3.bar(range(len(err)), err, color=colors, alpha=0.75, width=0.7)
-    ax3.axhline(0, color="black", lw=0.8)
-    ax3.axhline(+2, color=ORANGE, lw=0.8, ls="--", alpha=0.6, label="±2% band")
-    ax3.axhline(-2, color=ORANGE, lw=0.8, ls="--", alpha=0.6)
-    ax3.set_xlabel("Sweep Point Index")
-    ax3.set_ylabel("Residual Error (%)")
-    ax3.set_title(f"{dev}\nResidual Error", fontsize=10, fontweight="bold")
-    ax3.legend(fontsize=8)
-    ax3.grid(**GRID_KW)
-
-    fig.suptitle(f"IHP130 SG13G2 — {dev} HBT Model", fontsize=12, fontweight="bold", y=1.01)
-    save(f"plot_{dev}.png")
-    print(f"    {dev}: R²={r2:.6f}  max_err={np.abs(err).max():.2f}%  pts={len(pts)}")
-
-# ══════════════════════════════════════════════════════════════════════════════
-# 5. MODEL COMPARISON SUMMARY (all 11 devices)
-# ══════════════════════════════════════════════════════════════════════════════
-print("\nGenerating model_comparison_ihp130.png ...")
-
-all_devs    = []
-all_r2      = []
-all_maxerr  = []
-all_pts     = []
-
-def collect_stats(dev, A, P, n):
-    r2  = r2_score(A, P)
-    err = np.abs((P - A) / A * 100)
-    all_devs.append(dev)
-    all_r2.append(r2)
-    all_maxerr.append(err.max())
-    all_pts.append(n)
-
-for dev, data in db["mosfets"].items():
-    pts = data.get("sweep", [])
-    if not pts: continue
-    m = data["model"]
-    A = np.array([p["area_um2"] for p in pts])
-    P = np.array([pred_mosfet(m, p) for p in pts])
-    collect_stats(dev, A, P, len(pts))
-
-for dev, data in db["resistors"].items():
-    pts = data.get("sweep", [])
-    mdl = data.get("model", [])
-    if not pts or not mdl: continue
-    A = np.array([p["area_um2"] for p in pts])
-    P = np.array([pred_resistor(mdl, p) for p in pts])
-    collect_stats(dev, A, P, len(pts))
-
-for dev, data in db["mim_caps"].items():
-    pts = data.get("sweep", [])
-    m   = data.get("model", {})
-    if not pts or not m: continue
-    A = np.array([p["area_um2"] for p in pts])
-    P = np.array([pred_cap(m, p) for p in pts])
-    collect_stats(dev, A, P, len(pts))
-
-for dev, data in db["hbts"].items():
-    pts = data.get("sweep", [])
-    m   = data.get("model", {})
-    if not pts or not m: continue
-    is_f = "fixed_h" in m
-    A = np.array([p["area_um2"] for p in pts])
-    P = np.array([(pred_hbt_fixed(m, p) if is_f else pred_hbt_var(m, p)) for p in pts])
-    collect_stats(dev, A, P, len(pts))
-
-fig, axes = plt.subplots(1, 2, figsize=(16, 6))
-x = np.arange(len(all_devs))
-short_labels = [d.replace("sg13_", "").replace("_nmos","_N").replace("_pmos","_P")
-                .replace("npn13g2","npn") for d in all_devs]
-
-# ── Left: R² per device ───────────────────────────────────────────────────
-ax = axes[0]
-bars = ax.bar(x, all_r2, color=BLUE, alpha=0.8, width=0.65, edgecolor="white")
-ax.axhline(0.990, color=RED, ls="--", lw=1.2, alpha=0.7, label="R²=0.990 threshold")
-ax.set_xticks(x)
-ax.set_xticklabels(short_labels, rotation=38, ha="right", fontsize=8)
-ax.set_ylim(0.96, 1.002)
-ax.set_ylabel("R² (goodness of fit)")
-ax.set_title("Model R² — All 11 IHP130 Devices", fontsize=11, fontweight="bold")
-for bar, r in zip(bars, all_r2):
-    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.0002,
-            f"{r:.4f}", ha="center", va="bottom", fontsize=6.5, color="#1E3A5F")
-ax.legend(fontsize=9)
-ax.grid(axis="y", **GRID_KW)
-
-# ── Right: Max error % per device ─────────────────────────────────────────
-ax = axes[1]
-errcols = [RED if e > 2 else BLUE for e in all_maxerr]
-bars = ax.bar(x, all_maxerr, color=errcols, alpha=0.8, width=0.65, edgecolor="white")
-ax.axhline(2.0, color=RED, ls="--", lw=1.2, alpha=0.7, label="2% threshold")
-ax.set_xticks(x)
-ax.set_xticklabels(short_labels, rotation=38, ha="right", fontsize=8)
-ax.set_ylabel("Max Point Error (%)")
-ax.set_title("Max Prediction Error — All 11 IHP130 Devices", fontsize=11, fontweight="bold")
-for bar, e in zip(bars, all_maxerr):
-    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.005,
-            f"{e:.2f}%", ha="center", va="bottom", fontsize=7, color="#4B0000")
-ax.legend(fontsize=9)
-ax.grid(axis="y", **GRID_KW)
-
-fig.suptitle("IHP130 SG13G2 — Model Performance Summary Across All 11 Devices",
-             fontsize=13, fontweight="bold", y=1.01)
+fig, ax = plt.subplots(figsize=(10, 6), dpi=150)
+colors = ['#27AE60' if e < 5 else '#F39C12' if e < 10 else '#C0392B' for e in max_errs]
+y_pos = np.arange(len(devs))
+ax.barh(y_pos, max_errs, color=colors, edgecolor='white')
+ax.set_yticks(y_pos)
+ax.set_yticklabels(devs)
+ax.invert_yaxis()  
+ax.set_xlabel("Maximum Point Error (%)")
+ax.set_title("Maximum Prediction Error by Device", fontsize=14, fontweight='bold', color=IHP_BLUE)
+for i, v in enumerate(max_errs):
+    ax.text(v + 0.1, i, f"{v:.2f}%", va='center', fontweight='bold', color='#333333')
 plt.tight_layout()
-save("model_comparison_ihp130.png")
+plt.savefig(PLOTS_DIR / "ihp130_residuals.png")
+plt.close()
 
-print(f"\nAll plots saved to: {PLOTS_DIR}")
-print(f"Total devices plotted: {len(all_devs)}")
+# ════════════════════════════════════════════════════════════════════════
+# FIG 13: Summary Table
+# ════════════════════════════════════════════════════════════════════════
+fig, ax = plt.subplots(figsize=(10, 5), dpi=150)
+ax.axis('tight'); ax.axis('off')
+table_data = [["Device", "Sweep Pts", "Max Error %", "Model Type"]]
+for dev in devs:
+    cat = next(c for c in ["mosfets", "resistors", "mim_caps", "hbts"] if dev in db.get(c, {}))
+    pts = len(db[cat][dev]["sweep"])
+    err = max_errs[devs.index(dev)]
+    table_data.append([dev, str(pts), f"{err:.2f}%", cat[:-1].capitalize()])
+
+table = ax.table(cellText=table_data, loc='center', cellLoc='center')
+table.auto_set_font_size(False)
+table.set_fontsize(12)
+table.scale(1, 1.8)
+for i in range(len(table_data[0])):
+    table[(0, i)].set_facecolor(IHP_BLUE)
+    table[(0, i)].set_text_props(color='white', weight='bold')
+for i in range(1, len(table_data)):
+    bg = '#EBF5FB' if i % 2 == 0 else 'white'
+    for j in range(len(table_data[0])):
+        table[(i, j)].set_facecolor(bg)
+
+plt.title("Model Comparison Summary", fontsize=16, fontweight='bold', color=IHP_BLUE)
+plt.tight_layout()
+plt.savefig(PLOTS_DIR / "ihp130_model_comparison.png")
+plt.close()
+
+print("13 plots generated successfully.")
